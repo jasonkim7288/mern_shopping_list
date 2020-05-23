@@ -12,6 +12,7 @@ import {
 import { connect } from 'react-redux';
 import { addItem } from '../actions/itemActions';
 import PropTypes from 'prop-types';
+import axios from 'axios';
 
 class ItemModal extends Component {
     state = {
@@ -38,15 +39,25 @@ class ItemModal extends Component {
     onSubmit = (e) => {
         e.preventDefault();
 
-        const newItem = {
-            name: this.state.name
-        };
+        const name = this.state.name.replace(" ", "%20");
+        const url = `https://api.unsplash.com/search/photos?page=1&query=${name}&client_id=uqXZu7wXziL89doiBnoz0yUFShlmZY4rnvn4VMHWx0s&orientation=landscape`;
 
-        // Add item via addItem action
-        this.props.addItem(newItem);
+        axios.get(url)
+        .then(res => {
+            const { results } = res.data;
+            const newItem = {
+                name: this.state.name,
+                pic: results[0].urls.small
+            }
 
-        // Close modal
-        this.toggle();
+            console.log(newItem);
+
+            // Add item via addItem action
+            this.props.addItem(newItem);
+
+            // Close modal
+            this.toggle();
+        });
     }
 
     render() {
