@@ -14,3 +14,4 @@ Additional function is whenever item is added, unsplash api will find a picture 
 ## Tech stack
 - MERN : Front end and back end source code
 - Heroku : deploy the code
+- Unsplash : API for searching images
